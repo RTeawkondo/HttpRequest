@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import MoviesList from "./components/MoviesList";
 import "./App.css";
@@ -7,7 +7,7 @@ function App() {
   const [state, setState] = useState([]);
   const [loading, setLoad] = useState(false);
   const [err, setErr] = useState(null);
-  async function fecthHandler() {
+  const fecthHandler = useCallback(async () => {
     setLoad(true);
     setErr(null);
     try {
@@ -29,7 +29,12 @@ function App() {
       setErr(error.message);
     }
     setLoad(false);
-  }
+  },[])
+
+  useEffect(()=>{
+    fecthHandler()
+  },[fecthHandler])
+
   let content;
   if (loading) {
     content = <p>loading........!</p>;
